@@ -22,6 +22,7 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String email;
 
     private String password;
@@ -30,6 +31,7 @@ public class User extends BaseTimeEntity {
 
     private String nickname;
 
+    @Column(unique = true)
     private String phoneNumber; // encrypt 형태 저장
 
     @Convert(converter = GenderConverter.class)
