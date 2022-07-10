@@ -2,7 +2,7 @@ package com.ably.assignment.verification.controller;
 
 import com.ably.assignment.global.response.ResponseWrapper;
 import com.ably.assignment.verification.controller.dto.LoginRequest;
-import com.ably.assignment.user.controller.dto.VerificationCodeResponse;
+import com.ably.assignment.verification.controller.dto.VerificationCodeResponse;
 import com.ably.assignment.verification.controller.dto.TokenResponse;
 import com.ably.assignment.verification.service.VerificationService;
 import lombok.RequiredArgsConstructor;
