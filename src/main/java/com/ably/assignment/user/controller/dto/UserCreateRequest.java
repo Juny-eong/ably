@@ -28,11 +28,11 @@ public class UserCreateRequest {
 
     public User toUser() {
         return User.builder()
-                .email(email)
+                .decryptedEmail(email)
                 .password(password)
                 .name(name)
                 .nickname(nickname)
-                .phoneNumber(phoneNumber)
+                .decryptedPhoneNumber(phoneNumber)
                 .verificationCode(verificationCode)
                 .gender(gender)
                 .build();

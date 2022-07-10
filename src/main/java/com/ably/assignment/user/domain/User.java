@@ -6,6 +6,7 @@ import com.ably.assignment.global.encrypt.SEEDEncoder;
 import com.ably.assignment.user.domain.enumerated.Gender;
 import com.ably.assignment.user.domain.enumerated.GenderConverter;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -29,7 +30,7 @@ public class User extends BaseTimeEntity {
 
     private String nickname;
 
-    private Long phoneNumber;
+    private String phoneNumber; // encrypt 형태 저장
 
     @Convert(converter = GenderConverter.class)
     private Gender gender;
@@ -58,19 +59,24 @@ public class User extends BaseTimeEntity {
         );
     }
 
-    public void encryptAll() {
+    public void encryptAll(PasswordEncoder passwordEncoder) {
         encryptEmail();
         encryptPhoneNumber();
+        encryptPassword(passwordEncoder);
+    }
+
+    private void encryptPassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(password);
     }
 
 
     public void encryptEmail() {
-        email = SEEDEncoder.encrypt(email);
+        email = SEEDEncoder.encrypt(decryptedEmail);
     }
 
 
     public void encryptPhoneNumber() {
-        phoneNumber = Long.valueOf(SEEDEncoder.encrypt(String.valueOf(phoneNumber)));
+        phoneNumber = SEEDEncoder.encrypt(String.valueOf(decryptedPhoneNumber));
     }
 
 

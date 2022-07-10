@@ -5,6 +5,7 @@ import com.ably.assignment.user.domain.User;
 import com.ably.assignment.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public User createUser(User user) {
@@ -21,7 +23,7 @@ public class UserService {
         checkUserExists(user.getEmail());
 
         // 2. encrypt and save
-        user.encryptAll();
+        user.encryptAll(passwordEncoder);
 
         // 3. save and return user
         return userRepository.save(user);
