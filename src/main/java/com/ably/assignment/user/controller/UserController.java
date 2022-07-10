@@ -14,7 +14,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(path = "/sign-up")
-    public ResponseEntity<ResponseWrapper<UserResponse>> createUser(UserCreateRequest request) {
+    public ResponseEntity<ResponseWrapper<UserResponse>> createUser(@RequestBody UserCreateRequest request) {
         // validation
         // request.validate();
         final UserResponse response = UserResponse.of(userService.createUser(request.toUser()));
