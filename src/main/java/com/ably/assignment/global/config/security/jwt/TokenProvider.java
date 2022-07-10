@@ -1,6 +1,7 @@
 package com.ably.assignment.global.config.security.jwt;
 
 
+import com.ably.assignment.global.config.security.CustomPrincipal;
 import com.ably.assignment.verification.controller.dto.LoginRequest;
 import com.ably.assignment.verification.controller.dto.TokenResponse;
 import io.jsonwebtoken.Claims;

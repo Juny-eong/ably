@@ -1,4 +1,4 @@
-package com.ably.assignment.global.config.security.jwt;
+package com.ably.assignment.global.config.security;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
