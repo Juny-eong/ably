@@ -3,12 +3,10 @@ package com.ably.assignment.user.domain;
 
 import com.ably.assignment.global.base.BaseTimeEntity;
 import com.ably.assignment.user.domain.enumerated.Gender;
+import com.ably.assignment.user.domain.enumerated.GenderConverter;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Builder
 @Getter
@@ -30,7 +28,11 @@ public class User extends BaseTimeEntity {
 
     private Long phoneNumber;
 
+    @Convert(converter = GenderConverter.class)
     private Gender gender;
+
+    @Transient
+    private int verificationCode;
 
 
 }
