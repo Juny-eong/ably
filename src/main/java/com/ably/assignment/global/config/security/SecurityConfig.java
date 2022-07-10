@@ -54,7 +54,7 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/sign-up", "/users/login", "/verification/code", "/h2-console/**").permitAll()
+                .antMatchers("/users/sign-up", "/verification/login", "/verification/code", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
 
 

@@ -8,10 +8,7 @@ import com.ably.assignment.verification.service.VerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping(path = "/verification")
@@ -28,8 +25,8 @@ public class VerificationController {
 
 
     @PostMapping(path = "/login")
-    public ResponseEntity<ResponseWrapper<TokenResponse>> login(LoginRequest request) {
-        TokenResponse response = verificationService.login(request);
+    public ResponseEntity<ResponseWrapper<TokenResponse>> login(@RequestBody LoginRequest request) {
+        TokenResponse response = verificationService.login(request.toUser());
         return ResponseWrapper.ok("login success.", response);
     }
 

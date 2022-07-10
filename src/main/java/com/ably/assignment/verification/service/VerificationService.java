@@ -1,7 +1,7 @@
 package com.ably.assignment.verification.service;
 
 import com.ably.assignment.global.config.security.jwt.TokenProvider;
-import com.ably.assignment.verification.controller.dto.LoginRequest;
+import com.ably.assignment.user.domain.User;
 import com.ably.assignment.verification.controller.dto.TokenResponse;
 import com.ably.assignment.verification.domain.Verification;
 import com.ably.assignment.verification.domain.VerificationRepository;
@@ -45,20 +45,22 @@ public class VerificationService {
 
 
     /**
+     * 해당 핸드폰 번호로 발급받은 인증코드와 인풋의 코드가 일치하지 않거나 만료된 경우 예외 발생
      * @param phoneNumber 본인 인증을 위한 핸드폰 번호
      * @param code 인증코드
-     * @return 해당 핸드폰 번호로 발급받은 인증코드와 인풋의 코드가 일치하고 만료되지 않은 경우 True 리턴
      */
-    public boolean checkVerificationCode(Long phoneNumber, int code) {
-        return verificationRepository.findById(phoneNumber)
+    public void checkIsValidOrThrow(Long phoneNumber, int code) {
+        if (!verificationRepository.findById(phoneNumber)
                 .orElseThrow(RuntimeException::new)
-                .isValid(code, Long.parseLong(expiration));
+                .isValid(code, Long.parseLong(expiration))) {
+            throw new RuntimeException();
+        }
     }
 
 
-    public TokenResponse login(LoginRequest request) {
+    public TokenResponse login(User user) {
         // 1. 입력값으로 만든 임시 Authentication 객체
-        Authentication token = tokenProvider.getTemporalToken(request);
+        Authentication token = tokenProvider.getTemporalToken(user);
         // 2. 임시 객체로 인증
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(token);
 

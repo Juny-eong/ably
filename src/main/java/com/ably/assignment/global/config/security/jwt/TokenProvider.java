@@ -2,7 +2,7 @@ package com.ably.assignment.global.config.security.jwt;
 
 
 import com.ably.assignment.global.config.security.CustomPrincipal;
-import com.ably.assignment.verification.controller.dto.LoginRequest;
+import com.ably.assignment.user.domain.User;
 import com.ably.assignment.verification.controller.dto.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -22,7 +22,7 @@ import java.util.Date;
 public class TokenProvider {
     private final Key key;
 
-    @Value("${jwt.token.expiration-ms")
+    @Value("${jwt.token.expiration-ms}")
     private String JWT_EXPIRATION_MS;
 
     @Value("${jwt.token.type}")
@@ -56,7 +56,7 @@ public class TokenProvider {
     }
 
     private Date expirationFrom(Date currentTime) {
-        return new Date(currentTime.getTime() + JWT_EXPIRATION_MS);
+        return new Date(currentTime.getTime() + Long.parseLong(JWT_EXPIRATION_MS));
     }
 
 
@@ -64,7 +64,6 @@ public class TokenProvider {
         Claims claims = parseClaims(token);
         CustomPrincipal customPrincipal = CustomPrincipal.builder()
                 .email(claims.getSubject())
-                .id(Long.valueOf(claims.getAudience()))
                 .build();
 
         log.info("[getAuthentication] user email - {}", customPrincipal.getEmail());
@@ -91,9 +90,9 @@ public class TokenProvider {
     }
 
 
-    public Authentication getTemporalToken(LoginRequest request) {
+    public Authentication getTemporalToken(User user) {
         CustomPrincipal customPrincipal = new CustomPrincipal();
-        customPrincipal.setEmail(request.getEmail());
-        return new UsernamePasswordAuthenticationToken(customPrincipal, request.getPassword(), null);
+        customPrincipal.setEmail(user.getEmail());
+        return new UsernamePasswordAuthenticationToken(customPrincipal, user.getPassword(), null);
     }
 }

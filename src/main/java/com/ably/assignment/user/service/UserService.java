@@ -3,6 +3,7 @@ package com.ably.assignment.user.service;
 import com.ably.assignment.global.config.security.CustomPrincipal;
 import com.ably.assignment.user.domain.User;
 import com.ably.assignment.user.domain.UserRepository;
+import com.ably.assignment.verification.service.VerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,19 +14,21 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class UserService {
+    private final VerificationService verificationService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public User createUser(User user) {
+        // 1. check verification code
+        verificationService.checkIsValidOrThrow(user.getDecryptedPhoneNumber(), user.getVerificationCode());
 
-        // 1. check exists
+        // 2. check user exists
         checkUserExists(user.getEmail());
 
-        // 2. encrypt and save
+        // 3. encrypt and save
         user.encryptAll(passwordEncoder);
 
-        // 3. save and return user
         return userRepository.save(user);
     }
 

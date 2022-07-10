@@ -1,5 +1,6 @@
 package com.ably.assignment.verification.controller.dto;
 
+import com.ably.assignment.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,4 +10,11 @@ public class LoginRequest {
     private String email;
 
     private String password;
+
+    public User toUser() {
+        return User.builder()
+                .email(email)
+                .password(password)
+                .build();
+    }
 }
