@@ -19,7 +19,7 @@ public class UserResponse {
 
     private String nickname;
 
-    private Long phoneNumber;
+    private String phoneNumber;
 
     private Gender gender;
 

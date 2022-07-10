@@ -44,7 +44,7 @@ public class User extends BaseTimeEntity {
     private String decryptedEmail;
 
     @Transient
-    private Long decryptedPhoneNumber;
+    private String decryptedPhoneNumber;
 
 
     public String getDecryptedEmail() {
@@ -54,10 +54,10 @@ public class User extends BaseTimeEntity {
         );
     }
 
-    public Long getDecryptedPhoneNumber() {
+    public String getDecryptedPhoneNumber() {
         return Objects.requireNonNullElseGet(
                 decryptedPhoneNumber,
-                () -> decryptedPhoneNumber = Long.valueOf(SEEDEncoder.decrypt(String.valueOf(phoneNumber)))
+                () -> decryptedPhoneNumber = SEEDEncoder.decrypt(String.valueOf(phoneNumber))
         );
     }
 

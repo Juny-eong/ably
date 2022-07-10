@@ -20,7 +20,7 @@ public class UserCreateRequest {
 
     private String nickname;
 
-    private Long phoneNumber;
+    private String phoneNumber;
 
     private int verificationCode;
 

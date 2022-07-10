@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
-public interface VerificationRepository extends JpaRepository<Verification, Long> {
-    Optional<Verification> findByPhoneNumberAndCreatedAtGreaterThan(Long phoneNumber, LocalDateTime time);
+public interface VerificationRepository extends JpaRepository<Verification, String> {
+    Optional<Verification> findByPhoneNumberAndCreatedAtGreaterThan(String phoneNumber, LocalDateTime time);
 }

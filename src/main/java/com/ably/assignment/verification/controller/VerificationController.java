@@ -17,7 +17,7 @@ public class VerificationController {
     private final VerificationService verificationService;
 
     @GetMapping(path = "/code")
-    public ResponseEntity<VerificationCodeResponse> createVerificationCode(@RequestParam("phone-number") Long phoneNumber) {
+    public ResponseEntity<VerificationCodeResponse> createVerificationCode(@RequestParam("phone-number") String phoneNumber) {
         final VerificationCodeResponse response =
                 VerificationCodeResponse.of(verificationService.getOrCreateCode(phoneNumber));
         return ResponseEntity.ok(response);

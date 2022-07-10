@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class Verification {
 
     @Id
-    private Long phoneNumber;
+    private String phoneNumber;
 
     @NotNull
     private int code;

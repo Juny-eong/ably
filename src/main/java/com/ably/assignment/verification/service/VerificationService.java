@@ -31,7 +31,7 @@ public class VerificationService {
      * @return 만료되지 않은 인증코드가 있는 경우 해당 코드 리턴, 없거나 만료된 경우 새로 생성한 후 리턴
      */
     @Transactional
-    public Verification getOrCreateCode(Long phoneNumber) {
+    public Verification getOrCreateCode(String phoneNumber) {
         return verificationRepository.findByPhoneNumberAndCreatedAtGreaterThan(
                 phoneNumber, LocalDateTime.now().minusMinutes(Long.parseLong(expiration)))
                 .orElseGet(() -> {
@@ -49,7 +49,7 @@ public class VerificationService {
      * @param phoneNumber 본인 인증을 위한 핸드폰 번호
      * @param code 인증코드
      */
-    public void checkIsValidOrThrow(Long phoneNumber, int code) {
+    public void checkIsValidOrThrow(String phoneNumber, int code) {
         if (!verificationRepository.findById(phoneNumber)
                 .orElseThrow(RuntimeException::new)
                 .isValid(code, Long.parseLong(expiration))) {
