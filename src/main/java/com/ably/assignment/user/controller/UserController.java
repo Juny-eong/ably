@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping(path = "/sign-up")
     public ResponseEntity<ResponseWrapper<UserResponse>> createUser(UserCreateRequest request) {
         // validation
         // request.validate();

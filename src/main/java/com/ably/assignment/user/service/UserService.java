@@ -1,6 +1,6 @@
 package com.ably.assignment.user.service;
 
-import com.ably.assignment.global.config.security.jwt.CustomPrincipal;
+import com.ably.assignment.global.config.security.CustomPrincipal;
 import com.ably.assignment.user.domain.User;
 import com.ably.assignment.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
