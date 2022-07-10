@@ -1,7 +1,8 @@
 package com.ably.assignment.global.config.security.jwt;
 
 
-import com.ably.assignment.user.controller.dto.TokenResponse;
+import com.ably.assignment.verification.controller.dto.LoginRequest;
+import com.ably.assignment.verification.controller.dto.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -86,5 +87,12 @@ public class TokenProvider {
             log.info("[validationToken] - invalid token");
         }
         return false;
+    }
+
+
+    public Authentication getTemporalToken(LoginRequest request) {
+        CustomPrincipal customPrincipal = new CustomPrincipal();
+        customPrincipal.setEmail(request.getEmail());
+        return new UsernamePasswordAuthenticationToken(customPrincipal, request.getPassword(), null);
     }
 }

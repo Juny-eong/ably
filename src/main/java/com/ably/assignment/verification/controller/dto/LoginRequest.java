@@ -1,4 +1,4 @@
-package com.ably.assignment.user.controller.dto;
+package com.ably.assignment.verification.controller.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
