@@ -2,10 +2,13 @@ package com.ably.assignment.user.controller.dto;
 
 import com.ably.assignment.user.domain.User;
 import com.ably.assignment.user.domain.enumerated.Gender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -23,6 +26,12 @@ public class UserResponse {
 
     private Gender gender;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime createdAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime modifiedAt;
+
 
     public static UserResponse of(User user) {
         return UserResponse.builder()
@@ -31,6 +40,8 @@ public class UserResponse {
                 .nickname(user.getNickname())
                 .phoneNumber(user.getDecryptedPhoneNumber())
                 .gender(user.getGender())
+                .createdAt(user.getCreatedAt())
+                .modifiedAt(user.getModifiedAt())
                 .build();
     }
 }
