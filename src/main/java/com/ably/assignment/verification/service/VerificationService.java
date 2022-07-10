@@ -22,8 +22,8 @@ public class VerificationService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    @Value("${verification.expiration-period}")
-    private Long expiration;
+    @Value("${verification.expiration-min}")
+    private String expiration;
 
 
     /**
@@ -33,7 +33,7 @@ public class VerificationService {
     @Transactional
     public Verification getOrCreateCode(Long phoneNumber) {
         return verificationRepository.findByPhoneNumberAndCreatedAtGreaterThan(
-                phoneNumber, LocalDateTime.now().minusMinutes(expiration))
+                phoneNumber, LocalDateTime.now().minusMinutes(Long.parseLong(expiration)))
                 .orElseGet(() -> {
                     final int code = ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
                     return verificationRepository.save(Verification.builder()
@@ -52,7 +52,7 @@ public class VerificationService {
     public boolean checkVerificationCode(Long phoneNumber, int code) {
         return verificationRepository.findById(phoneNumber)
                 .orElseThrow(RuntimeException::new)
-                .isValid(code, expiration);
+                .isValid(code, Long.parseLong(expiration));
     }
 
 

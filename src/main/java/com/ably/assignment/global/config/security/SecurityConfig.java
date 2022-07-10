@@ -23,7 +23,6 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    private final CorsFilter corsFilter;
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAccessDeniedHandler accessDeniedHandler;
@@ -61,7 +60,6 @@ public class SecurityConfig {
 
 
                 .and()
-                .addFilter(corsFilter)
                 .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
 
                 .build();

@@ -22,7 +22,7 @@ public class TokenProvider {
     private final Key key;
 
     @Value("${jwt.token.expiration-ms")
-    private long JWT_EXPIRATION_MS;
+    private String JWT_EXPIRATION_MS;
 
     @Value("${jwt.token.type}")
     private String tokenType;
