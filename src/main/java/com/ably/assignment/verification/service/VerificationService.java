@@ -46,15 +46,19 @@ public class VerificationService {
 
     /**
      * 해당 핸드폰 번호로 발급받은 인증코드와 인풋의 코드가 일치하지 않거나 만료된 경우 예외 발생
-     * @param phoneNumber 본인 인증을 위한 핸드폰 번호
+     * @param phoneNumber 암호화되지 않은 핸드폰 번호
      * @param code 인증코드
      */
+    @Transactional
     public void checkIsValidOrThrow(String phoneNumber, int code) {
-        if (!verificationRepository.findById(phoneNumber)
-                .orElseThrow(RuntimeException::new)
-                .isValid(code, Long.parseLong(expiration))) {
-            throw new RuntimeException();
+        final Verification verification = verificationRepository.findById(phoneNumber)
+                .orElseThrow(RuntimeException::new);
+
+        if (verification.isValid(code, Long.parseLong(expiration))) {
+            verificationRepository.delete(verification);
+            return;
         }
+        throw new RuntimeException();
     }
 
 

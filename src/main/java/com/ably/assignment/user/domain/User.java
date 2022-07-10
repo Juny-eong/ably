@@ -82,4 +82,7 @@ public class User extends BaseTimeEntity {
     }
 
 
+    public void resetPassword(String password) {
+        this.password = password;
+    }
 }
