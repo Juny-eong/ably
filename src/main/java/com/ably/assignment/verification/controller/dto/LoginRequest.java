@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class LoginRequest {
-    private String email;
+    private String identifier;
 
     private String password;
 
     public User toUser() {
         return User.builder()
-                .email(email)
+                .identifier(identifier)
                 .password(password)
                 .build();
     }

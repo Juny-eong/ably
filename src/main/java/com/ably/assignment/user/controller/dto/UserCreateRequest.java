@@ -6,23 +6,33 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCreateRequest {
+    @NotBlank(message = "email must not be empty")
     private String email;
 
+    @NotBlank(message = "password must not be empty")
     private String password;
 
+    @NotBlank(message = "name must not be empty")
     private String name;
 
+    @Nullable
     private String nickname;
 
+    @NotBlank(message = "phone number must not be empty")
     private String phoneNumber;
 
-    private int verificationCode;
+    @NotNull(message = "verification code must not be empty")
+    private Integer verificationCode;
 
     private Gender gender;
 

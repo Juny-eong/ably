@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class VerificationController {
     private final VerificationService verificationService;
 
+
     @GetMapping(path = "/code")
     public ResponseEntity<VerificationCodeResponse> createVerificationCode(@RequestParam("phone-number") String phoneNumber) {
         final VerificationCodeResponse response =

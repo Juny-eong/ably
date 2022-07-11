@@ -5,10 +5,12 @@ import com.ably.assignment.global.config.security.jwt.JwtAccessDeniedHandler;
 import com.ably.assignment.global.config.security.jwt.JwtAuthenticationEntryPoint;
 import com.ably.assignment.global.config.security.jwt.JwtFilter;
 import com.ably.assignment.global.config.security.jwt.TokenProvider;
+import com.ably.assignment.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -22,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+    private final CustomUserDetailsService userDetailsService;
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAccessDeniedHandler accessDeniedHandler;
@@ -32,6 +35,13 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -51,8 +61,11 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
-
                 .and()
+                .authenticationProvider(daoAuthenticationProvider())
+//                .authenticationProvider(new PhoneNumberAuthenticationProvider(userDetailsService, passwordEncoder()))
+
+
                 .authorizeRequests()
                 .antMatchers("/h2-console/**",
                         "/verification/login",

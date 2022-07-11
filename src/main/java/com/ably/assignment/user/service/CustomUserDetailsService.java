@@ -6,7 +6,6 @@ import com.ably.assignment.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -20,6 +19,18 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userRepository.findByEmail(SEEDEncoder.encrypt(email))
                 .map(user -> CustomPrincipal.builder()
                         .email(user.getEmail())
+                        .phoneNumber(user.getPhoneNumber())
+                        .password(user.getPassword())
+                        .build())
+                .orElseThrow(RuntimeException::new);
+    }
+
+
+    public UserDetails loadUserByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(SEEDEncoder.encrypt(phoneNumber))
+                .map(user -> CustomPrincipal.builder()
+                        .email(user.getEmail())
+                        .phoneNumber(user.getPhoneNumber())
                         .password(user.getPassword())
                         .build())
                 .orElseThrow(RuntimeException::new);

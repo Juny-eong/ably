@@ -12,11 +12,11 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomPrincipal implements UserDetails {
-    private Long id;
-
     private String email;
 
     private String password;
+
+    private String phoneNumber;
 
     /**
      * userDetailsService.loadUserByUsername 메서드에서 사용할 식별자 정보

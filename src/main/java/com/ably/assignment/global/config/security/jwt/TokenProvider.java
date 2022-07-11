@@ -15,11 +15,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Component
 public class TokenProvider {
+    private static final Pattern NUMBER_FORMAT = Pattern.compile("^[0-9]*$");
     private final Key key;
 
     @Value("${jwt.token.expiration-ms}")
@@ -41,7 +44,7 @@ public class TokenProvider {
                 .tokenType(tokenType)
                 .token(
                         Jwts.builder()
-                                .setAudience(String.valueOf(customPrincipal.getId()))
+                                .setAudience(String.valueOf(customPrincipal.getPhoneNumber()))
                                 .setSubject(customPrincipal.getEmail())
                                 .setIssuedAt(issuedAt)
                                 .setExpiration(expirationFrom(issuedAt))
@@ -69,7 +72,7 @@ public class TokenProvider {
         log.info("[getAuthentication] user email - {}", customPrincipal.getEmail());
 
         // authorities 파라미터를 받지 않는 생성자는 isAuthenticated = false 로 설정 -> FORBIDDEN
-        return new UsernamePasswordAuthenticationToken(customPrincipal, null, null);
+        return new UsernamePasswordAuthenticationToken(customPrincipal, null, new ArrayList<>());
     }
 
     private Claims parseClaims(String token) {
@@ -91,8 +94,24 @@ public class TokenProvider {
 
 
     public Authentication getTemporalToken(User user) {
-        CustomPrincipal customPrincipal = new CustomPrincipal();
-        customPrincipal.setEmail(user.getEmail());
-        return new UsernamePasswordAuthenticationToken(customPrincipal, user.getPassword(), null);
+        return NUMBER_FORMAT.matcher(user.getIdentifier()).matches()
+                ? getTokenByPhoneNumber(user)
+                : getTokenByEmail(user);
     }
+
+
+    private Authentication getTokenByPhoneNumber(User user) {
+        log.info("phone number token");
+        CustomPrincipal customPrincipal = new CustomPrincipal();
+        customPrincipal.setPhoneNumber(user.getIdentifier());
+        return new UsernamePasswordAuthenticationToken(customPrincipal, user.getPassword(), new ArrayList<>());
+    }
+
+    private Authentication getTokenByEmail(User user) {
+        log.info("email token");
+        CustomPrincipal customPrincipal = new CustomPrincipal();
+        customPrincipal.setEmail(user.getIdentifier());
+        return new UsernamePasswordAuthenticationToken(customPrincipal, user.getPassword(), new ArrayList<>());
+    }
+
 }
