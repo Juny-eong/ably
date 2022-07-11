@@ -1,5 +1,7 @@
 package com.ably.assignment.user.domain.enumerated;
 
+import com.ably.assignment.global.error.ErrorCode;
+import com.ably.assignment.global.error.exception.ConversionFailedException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
@@ -19,7 +21,7 @@ public enum Gender {
         return Arrays.stream(Gender.values())
                 .filter(e -> e.toString().equalsIgnoreCase(valueFromRequest))
                 .findFirst()
-                .orElseThrow(RuntimeException::new); // TODO exception
+                .orElseThrow(() -> new ConversionFailedException(ErrorCode.INVALID_GENDER_TYPE));
     }
 
     @JsonValue

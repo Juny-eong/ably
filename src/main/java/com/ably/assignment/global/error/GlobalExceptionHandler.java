@@ -47,4 +47,10 @@ public class GlobalExceptionHandler {
         return ErrorResponse.toResponseEntity(ex.getErrorCode());
     }
 
+
+    @ExceptionHandler(value = ConversionFailedException.class)
+    protected ResponseEntity<ErrorResponse> handleConversionFailedException(ConversionFailedException ex) {
+        log.error("handleConversionFailedException - ");
+        return ErrorResponse.toResponseEntity(ex.getErrorCode());
+    }
 }
