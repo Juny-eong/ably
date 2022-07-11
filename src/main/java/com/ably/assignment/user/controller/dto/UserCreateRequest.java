@@ -34,7 +34,9 @@ public class UserCreateRequest {
     @NotNull(message = "verification code must not be empty")
     private Integer verificationCode;
 
+    @NotNull(message = "gender type must not be empty")
     private Gender gender;
+
 
     public User toUser() {
         return User.builder()
