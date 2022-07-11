@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RequestMapping(path = "/verification")
 @Controller
@@ -26,7 +28,7 @@ public class VerificationController {
 
 
     @PostMapping(path = "/login")
-    public ResponseEntity<ResponseWrapper<TokenResponse>> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<ResponseWrapper<TokenResponse>> login(@RequestBody @Valid LoginRequest request) {
         TokenResponse response = verificationService.login(request.toUser());
         return ResponseWrapper.ok("login success.", response);
     }

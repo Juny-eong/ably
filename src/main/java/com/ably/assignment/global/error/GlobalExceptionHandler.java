@@ -3,7 +3,9 @@ package com.ably.assignment.global.error;
 import com.ably.assignment.global.error.exception.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -12,6 +14,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @RequiredArgsConstructor
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * Controller layer @Valid 검증 실패 처리
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        log.error("handleMethodArgumentNotValidException - ");
+
+        // @Valid 예외처리의 경우 별도 설정된 예외 메시지를 가져와서 넣어준다.
+        String message = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .status(HttpStatus.BAD_REQUEST.name())
+                        .message(message)
+                        .build());
+    }
 
     @ExceptionHandler(value = DuplicateUserException.class)
     protected ResponseEntity<ErrorResponse> handleDuplicateUserException(DuplicateUserException ex) {

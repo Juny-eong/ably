@@ -67,7 +67,7 @@ public class VerificationService {
     @Transactional
     public void checkIsValidOrThrow(String phoneNumber, int code) {
         final Verification verification = verificationRepository.findById(phoneNumber)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new InvalidVerificationCodeException(ErrorCode.INVALID_VERIFICATION_CODE));
 
         if (verification.isValid(code, Long.parseLong(expiration))) {
             verificationRepository.delete(verification);
