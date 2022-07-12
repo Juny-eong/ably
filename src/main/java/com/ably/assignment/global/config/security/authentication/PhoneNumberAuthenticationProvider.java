@@ -1,5 +1,6 @@
-package com.ably.assignment.global.config.security;
+package com.ably.assignment.global.config.security.authentication;
 
+import com.ably.assignment.global.config.security.CustomPrincipal;
 import com.ably.assignment.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor
-//@Component
+@Component
 public class PhoneNumberAuthenticationProvider implements AuthenticationProvider {
     private final CustomUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
@@ -42,7 +43,6 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return PhoneNumberPasswordAuthenticationToken.class.isAssignableFrom(authentication)
-                || UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return PhoneNumberPasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

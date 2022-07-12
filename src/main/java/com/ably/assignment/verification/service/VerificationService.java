@@ -10,7 +10,7 @@ import com.ably.assignment.verification.domain.Verification;
 import com.ably.assignment.verification.domain.VerificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class VerificationService {
 
     private final VerificationRepository verificationRepository;
     private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthenticationManager authenticationManager;
 
     @Value("${verification.expiration-min}")
     private String expiration;
@@ -82,11 +82,7 @@ public class VerificationService {
         // 1. 입력값으로 만든 임시 Authentication 객체
         Authentication token = tokenProvider.getTemporalToken(user);
         // 2. 임시 객체로 인증
-        System.out.println("11111");
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(token);
-        System.out.println("2222");
-
-        System.out.println(authentication.getPrincipal());
+        Authentication authentication = authenticationManager.authenticate(token);
 
         return tokenProvider.createToken(authentication);
     }

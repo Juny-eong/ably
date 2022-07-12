@@ -2,6 +2,7 @@ package com.ably.assignment.global.config.security.jwt;
 
 
 import com.ably.assignment.global.config.security.CustomPrincipal;
+import com.ably.assignment.global.config.security.authentication.PhoneNumberPasswordAuthenticationToken;
 import com.ably.assignment.user.domain.User;
 import com.ably.assignment.verification.controller.dto.TokenResponse;
 import io.jsonwebtoken.Claims;
@@ -104,7 +105,7 @@ public class TokenProvider {
         log.info("phone number token");
         CustomPrincipal customPrincipal = new CustomPrincipal();
         customPrincipal.setPhoneNumber(user.getIdentifier());
-        return new UsernamePasswordAuthenticationToken(customPrincipal, user.getPassword(), new ArrayList<>());
+        return new PhoneNumberPasswordAuthenticationToken(customPrincipal, user.getPassword(), new ArrayList<>());
     }
 
     private Authentication getTokenByEmail(User user) {
