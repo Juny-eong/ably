@@ -8,6 +8,9 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * 핸드폰 번호를 식별자로 로그인하는 경우 발급받는 토큰 - PhoneNumberPasswordAuthenticationProvider 에서 처리
+ */
 public class PhoneNumberPasswordAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;
@@ -25,6 +28,7 @@ public class PhoneNumberPasswordAuthenticationToken extends AbstractAuthenticati
     public static PhoneNumberPasswordAuthenticationToken authenticated(UserDetails userDetails) {
         return new PhoneNumberPasswordAuthenticationToken(userDetails, null, new ArrayList<>());
     }
+
 
     @Override
     public Object getCredentials() {

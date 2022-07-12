@@ -2,6 +2,8 @@ package com.ably.assignment.user.service;
 
 import com.ably.assignment.global.config.security.CustomPrincipal;
 import com.ably.assignment.global.encrypt.SEEDEncoder;
+import com.ably.assignment.global.error.ErrorCode;
+import com.ably.assignment.global.error.exception.UserNotFoundException;
 import com.ably.assignment.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         .phoneNumber(user.getPhoneNumber())
                         .password(user.getPassword())
                         .build())
-                .orElseThrow(RuntimeException::new);
+                    .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
 
@@ -33,6 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                         .phoneNumber(user.getPhoneNumber())
                         .password(user.getPassword())
                         .build())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 }
