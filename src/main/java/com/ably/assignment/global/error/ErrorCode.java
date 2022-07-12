@@ -18,10 +18,11 @@ public enum ErrorCode {
 
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "invalid token"),
 
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "there is no user matching the email address"),
+    AUTH_FAILED(HttpStatus.UNAUTHORIZED, "please check identifier / password"),
 
-    ;
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "no access to resources"),
 
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "there is no user matching the email address"), ;
 
 
     private final HttpStatus httpStatus;

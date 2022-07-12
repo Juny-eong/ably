@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -72,5 +74,17 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleConversionFailedException(ConversionFailedException ex) {
         log.error("handleConversionFailedException - ");
         return ErrorResponse.toResponseEntity(ex.getErrorCode());
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    protected ResponseEntity<ErrorResponse> handleAuthenticationException() {
+        log.error("handleAuthenticationException - ");
+        return ErrorResponse.toResponseEntity(ErrorCode.AUTH_FAILED);
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    protected ResponseEntity<ErrorResponse> handleAccessDeniedException() {
+        log.error("handleAccessDeniedException - ");
+        return ErrorResponse.toResponseEntity(ErrorCode.ACCESS_DENIED);
     }
 }
