@@ -1,8 +1,9 @@
-package com.ably.assignment.verification.service;
+package com.ably.assignment.unit.service;
 
 import com.ably.assignment.global.config.security.jwt.TokenProvider;
 import com.ably.assignment.verification.domain.Verification;
 import com.ably.assignment.verification.domain.VerificationRepository;
+import com.ably.assignment.verification.service.VerificationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,7 +62,7 @@ public class VerificationServiceTest {
     @Test
     public void CreateCodeTest() {
         // given
-        ReflectionTestUtils.setField(verificationService, "expiration", "10");
+        ReflectionTestUtils.setField(verificationService, "expiration", "10"); // expiration = 10;
         final int code = ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
         final String number = "123456";
         final Verification verification = Verification.builder()

@@ -1,10 +1,11 @@
 package com.ably.assignment.user.controller.dto;
 
 import com.ably.assignment.user.domain.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class ResetPasswordRequest {
     private String email;

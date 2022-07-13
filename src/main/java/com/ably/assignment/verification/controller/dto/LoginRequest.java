@@ -1,12 +1,16 @@
 package com.ably.assignment.verification.controller.dto;
 
 import com.ably.assignment.user.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
 
