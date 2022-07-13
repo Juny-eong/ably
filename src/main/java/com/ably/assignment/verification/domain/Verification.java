@@ -5,9 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -16,10 +14,16 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        indexes = @Index(name = "idx_verification_phone_no", columnList = "phoneNumber")
+)
 @Entity
 public class Verification {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String phoneNumber;
 
     @NotNull

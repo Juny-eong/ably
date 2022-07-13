@@ -29,7 +29,7 @@ public class VerificationService {
     private final AuthenticationManager authenticationManager;
 
     @Value("${verification.expiration-min}")
-    private String expiration;
+    private String expirationInMinutes;
 
 
     /**
@@ -38,10 +38,10 @@ public class VerificationService {
      */
     @Transactional
     public Verification getOrCreateCode(String phoneNumber) {
-        checkValidNumber(phoneNumber);
+        validatePhoneNumber(phoneNumber);
 
         return verificationRepository.findByPhoneNumberAndCreatedAtGreaterThan(
-                phoneNumber, LocalDateTime.now().minusMinutes(Long.parseLong(expiration)))
+                phoneNumber, LocalDateTime.now().minusMinutes(Long.parseLong(expirationInMinutes)))
                 .orElseGet(() -> {
                     final int code = ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
                     return verificationRepository.save(Verification.builder()
@@ -51,7 +51,7 @@ public class VerificationService {
                 });
     }
 
-    private void checkValidNumber(String phoneNumber) {
+    private void validatePhoneNumber(String phoneNumber) {
         if (!NUMBER_FORMAT.matcher(phoneNumber).matches()) {
             throw new InvalidPhoneNumberException(ErrorCode.INVALID_NUMBER_TYPE);
         }
@@ -66,10 +66,10 @@ public class VerificationService {
      */
     @Transactional
     public void checkIsValidOrThrow(String phoneNumber, int code) {
-        final Verification verification = verificationRepository.findById(phoneNumber)
+        final Verification verification = verificationRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new InvalidVerificationCodeException(ErrorCode.INVALID_VERIFICATION_CODE));
 
-        if (verification.isValid(code, Long.parseLong(expiration))) {
+        if (verification.isValid(code, Long.parseLong(expirationInMinutes))) {
             verificationRepository.delete(verification);
             return;
         }
