@@ -81,7 +81,7 @@ public class VerificationControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.status").value("200"),
-                        jsonPath("$.message").value("login success.")
+                        jsonPath("$.message").value("login success")
                 )
                 .andDo(print())
                 .andReturn();

@@ -49,4 +49,8 @@ public class UserCreateRequest {
                 .gender(gender)
                 .build();
     }
+
+    public void setVerificationCode(int code) {
+        this.verificationCode = code;
+    }
 }

@@ -30,7 +30,7 @@ public class VerificationController {
     @PostMapping(path = "/login")
     public ResponseEntity<ResponseWrapper<TokenResponse>> login(@RequestBody @Valid LoginRequest request) {
         TokenResponse response = verificationService.login(request.toUser());
-        return ResponseWrapper.ok("login success.", response);
+        return ResponseWrapper.ok("login success", response);
     }
 
 }
