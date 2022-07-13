@@ -1,4 +1,4 @@
-package com.ably.assignment.verification.controller.dto;
+package com.ably.assignment.login.controller.dto;
 
 import com.ably.assignment.user.domain.User;
 import lombok.AllArgsConstructor;

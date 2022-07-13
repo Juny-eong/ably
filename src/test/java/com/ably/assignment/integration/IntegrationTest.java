@@ -1,11 +1,11 @@
 package com.ably.assignment.integration;
 
 import com.ably.assignment.global.response.ResponseWrapper;
+import com.ably.assignment.login.controller.dto.LoginRequest;
 import com.ably.assignment.user.controller.dto.ResetPasswordRequest;
 import com.ably.assignment.user.controller.dto.UserCreateRequest;
 import com.ably.assignment.user.domain.UserRepository;
 import com.ably.assignment.user.domain.enumerated.Gender;
-import com.ably.assignment.verification.controller.dto.LoginRequest;
 import com.ably.assignment.verification.domain.VerificationRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,7 +54,7 @@ public class IntegrationTest {
     public void getVerificationCodeTest() throws Exception {
         // given & when
         final MvcResult result = mockMvc.perform(
-                get("/verification/code")
+                post("/verification/code")
                         .param("phone-number", phoneNumber)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
@@ -63,7 +63,7 @@ public class IntegrationTest {
                 .andReturn();
 
         // then
-        final int verificationCode = verificationRepository.findById(phoneNumber).orElseThrow().getCode();
+        final int verificationCode = verificationRepository.findByPhoneNumber(phoneNumber).orElseThrow().getCode();
         assertTrue(
                 result.getResponse().getContentAsString().contains(String.valueOf(verificationCode)));
     }
@@ -79,10 +79,10 @@ public class IntegrationTest {
         public void signUpWithVerificationCodeTest_success() throws Exception {
             // given
             mockMvc.perform(
-                    get("/verification/code")
+                    post("/verification/code")
                             .param("phone-number", phoneNumber)
                             .contentType(MediaType.APPLICATION_JSON));
-            final int verificationCode = verificationRepository.findById(phoneNumber).orElseThrow().getCode();
+            final int verificationCode = verificationRepository.findByPhoneNumber(phoneNumber).orElseThrow().getCode();
 
             // when
             mockMvc.perform(
@@ -100,10 +100,10 @@ public class IntegrationTest {
         public void signUpWithVerificationCodeTest_fail1() throws Exception {
             // given
             mockMvc.perform(
-                    get("/verification/code")
+                    post("/verification/code")
                             .param("phone-number", phoneNumber)
                             .contentType(MediaType.APPLICATION_JSON));
-            final int verificationCode = verificationRepository.findById(phoneNumber).orElseThrow().getCode();
+            final int verificationCode = verificationRepository.findByPhoneNumber(phoneNumber).orElseThrow().getCode();
 
             // when & then
             mockMvc.perform(
@@ -146,7 +146,7 @@ public class IntegrationTest {
 
             // when & then
             mockMvc.perform(
-                    post("/verification/login")
+                    post("/login")
                             .content(objectMapper.writeValueAsString(getLoginRequest(userEmail)))
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpectAll(
@@ -165,7 +165,7 @@ public class IntegrationTest {
 
             // when & then
             mockMvc.perform(
-                    post("/verification/login")
+                    post("/login")
                             .content(objectMapper.writeValueAsString(getLoginRequest(userEmail)))
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpectAll(
@@ -203,7 +203,7 @@ public class IntegrationTest {
 
             // when & then
             mockMvc.perform(
-                    post("/verification/login")
+                    post("/login")
                             .content(objectMapper.writeValueAsString(
                                     getLoginRequestWithInvalidPassword("wrongPassword")))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -226,7 +226,7 @@ public class IntegrationTest {
         assertNotNull(userRepository.findByEmail("test@test.com"));
 
         MvcResult result = mockMvc.perform(
-                post("/verification/login")
+                post("/login")
                         .content(objectMapper.writeValueAsString(getLoginRequest(userEmail)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpectAll(
@@ -262,10 +262,10 @@ public class IntegrationTest {
 
         // 본인인증코드 발급
         mockMvc.perform(
-                get("/verification/code")
+                post("/verification/code")
                         .param("phone-number", phoneNumber)
                         .contentType(MediaType.APPLICATION_JSON));
-        final int verificationCode = verificationRepository.findById(phoneNumber).orElseThrow().getCode();
+        final int verificationCode = verificationRepository.findByPhoneNumber(phoneNumber).orElseThrow().getCode();
         final ResetPasswordRequest resetPasswordRequest = ResetPasswordRequest.builder()
                 .email(userEmail)
                 .password("new-password")

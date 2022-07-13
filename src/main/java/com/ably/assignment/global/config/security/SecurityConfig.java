@@ -95,7 +95,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/h2-console/**",
-                        "/verification/login",
+                        "/login",
                         "/verification/code",
                         "/users/sign-up",
                         "/users/password").permitAll()

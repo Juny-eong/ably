@@ -88,10 +88,7 @@ public class UserControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.status").value("200"),
-                        jsonPath("$.message").value("create user success")
-                )
-                .andDo(print())
-                .andReturn();
+                        jsonPath("$.message").value("create user success"));
     }
 
 
@@ -109,10 +106,7 @@ public class UserControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.status").value("200"),
-                        jsonPath("$.message").value("get user success")
-                )
-                .andDo(print())
-                .andReturn();
+                        jsonPath("$.message").value("get user success"));
     }
 
 
@@ -136,10 +130,7 @@ public class UserControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.status").value("200"),
-                        jsonPath("$.message").value("reset password success")
-                )
-                .andDo(print())
-                .andReturn();
+                        jsonPath("$.message").value("reset password success"));
     }
 
 

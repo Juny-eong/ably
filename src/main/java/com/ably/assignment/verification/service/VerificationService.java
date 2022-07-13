@@ -1,17 +1,13 @@
 package com.ably.assignment.verification.service;
 
-import com.ably.assignment.global.config.security.jwt.TokenProvider;
 import com.ably.assignment.global.error.ErrorCode;
 import com.ably.assignment.global.error.exception.InvalidPhoneNumberException;
 import com.ably.assignment.global.error.exception.InvalidVerificationCodeException;
-import com.ably.assignment.user.domain.User;
-import com.ably.assignment.verification.controller.dto.TokenResponse;
 import com.ably.assignment.verification.domain.Verification;
 import com.ably.assignment.verification.domain.VerificationRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +19,7 @@ import java.util.regex.Pattern;
 @Service
 public class VerificationService {
     private static final Pattern NUMBER_FORMAT = Pattern.compile("^[0-9]*$");
-
     private final VerificationRepository verificationRepository;
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManager authenticationManager;
 
     @Value("${verification.expiration-min}")
     private String expirationInMinutes;
@@ -76,14 +69,4 @@ public class VerificationService {
         throw new InvalidVerificationCodeException(ErrorCode.INVALID_VERIFICATION_CODE);
     }
 
-
-
-    public TokenResponse login(User user) {
-        // 1. 입력값으로 만든 임시 Authentication 객체
-        Authentication token = tokenProvider.getTemporalToken(user);
-        // 2. 임시 객체로 인증
-        Authentication authentication = authenticationManager.authenticate(token);
-
-        return tokenProvider.createToken(authentication);
-    }
 }

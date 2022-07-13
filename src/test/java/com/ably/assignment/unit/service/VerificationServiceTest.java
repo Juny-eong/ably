@@ -39,7 +39,7 @@ public class VerificationServiceTest {
     @Test
     public void getCodeTest() {
         // given
-        ReflectionTestUtils.setField(verificationService, "expiration", "10");
+        ReflectionTestUtils.setField(verificationService, "expirationInMinutes", "10");
         final int code = ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
         final String number = "123456";
         final Verification verification = Verification.builder()
@@ -62,7 +62,7 @@ public class VerificationServiceTest {
     @Test
     public void CreateCodeTest() {
         // given
-        ReflectionTestUtils.setField(verificationService, "expiration", "10"); // expiration = 10;
+        ReflectionTestUtils.setField(verificationService, "expirationInMinutes", "10"); // expiration = 10;
         final int code = ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
         final String number = "123456";
         final Verification verification = Verification.builder()

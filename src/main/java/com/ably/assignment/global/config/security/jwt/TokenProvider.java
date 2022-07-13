@@ -3,8 +3,8 @@ package com.ably.assignment.global.config.security.jwt;
 
 import com.ably.assignment.global.config.security.CustomPrincipal;
 import com.ably.assignment.global.config.security.authentication.PhoneNumberPasswordAuthenticationToken;
+import com.ably.assignment.login.controller.dto.TokenResponse;
 import com.ably.assignment.user.domain.User;
-import com.ably.assignment.verification.controller.dto.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
