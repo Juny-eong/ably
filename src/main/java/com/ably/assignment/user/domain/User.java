@@ -59,7 +59,7 @@ public class User extends BaseTimeEntity {
     public String getDecryptedPhoneNumber() {
         return Objects.requireNonNullElseGet(
                 decryptedPhoneNumber,
-                () -> decryptedPhoneNumber = SEEDEncoder.decrypt(String.valueOf(phoneNumber))
+                () -> decryptedPhoneNumber = SEEDEncoder.decrypt(phoneNumber)
         );
     }
 
@@ -80,7 +80,7 @@ public class User extends BaseTimeEntity {
 
 
     public void encryptPhoneNumber() {
-        phoneNumber = SEEDEncoder.encrypt(String.valueOf(decryptedPhoneNumber));
+        phoneNumber = SEEDEncoder.encrypt(decryptedPhoneNumber);
     }
 
 
