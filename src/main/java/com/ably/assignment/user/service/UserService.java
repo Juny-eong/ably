@@ -3,9 +3,7 @@ package com.ably.assignment.user.service;
 import com.ably.assignment.global.config.security.CustomPrincipal;
 import com.ably.assignment.global.encrypt.SEEDEncoder;
 import com.ably.assignment.global.error.ErrorCode;
-import com.ably.assignment.global.error.exception.DuplicateUserException;
-import com.ably.assignment.global.error.exception.InvalidTokenException;
-import com.ably.assignment.global.error.exception.UserNotFoundException;
+import com.ably.assignment.global.error.exception.*;
 import com.ably.assignment.user.domain.User;
 import com.ably.assignment.user.domain.UserRepository;
 import com.ably.assignment.verification.service.VerificationService;
@@ -29,7 +27,7 @@ public class UserService {
         verificationService.checkIsValidOrThrow(user.getDecryptedPhoneNumber(), user.getVerificationCode());
 
         // 2. check user exists
-        checkUserExists(user.getDecryptedEmail());
+        checkUserExists(user.getDecryptedEmail(), user.getDecryptedPhoneNumber());
 
         // 3. encrypt and save
         user.encryptAll(passwordEncoder);
@@ -38,9 +36,12 @@ public class UserService {
     }
 
 
-    private void checkUserExists(String email) {
+    private void checkUserExists(String email, String phoneNumber) {
         if (userRepository.findByEmail(SEEDEncoder.encrypt(email)).isPresent()) {
-            throw new DuplicateUserException(ErrorCode.DUPLICATE_USER);
+            throw new DuplicateEmailException(ErrorCode.DUPLICATE_EMAIL);
+        }
+        if (userRepository.findByPhoneNumber(SEEDEncoder.encrypt(phoneNumber)).isPresent()) {
+            throw new DuplicatePhoneNumberException(ErrorCode.DUPLICATE_PHONE_NUMBER);
         }
     }
 

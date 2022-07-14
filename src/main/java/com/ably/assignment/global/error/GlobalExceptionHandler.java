@@ -64,6 +64,20 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(value = DuplicateEmailException.class)
+    protected ResponseEntity<ErrorResponse> handleDuplicateEmailException(DuplicateEmailException ex) {
+        log.error("handleDuplicateEmailException - ");
+        return ErrorResponse.toResponseEntity(ErrorCode.INVALID_PASSWORD);
+    }
+
+
+    @ExceptionHandler(value = DuplicatePhoneNumberException.class)
+    protected ResponseEntity<ErrorResponse> handleDuplicatePhoneNumberException(DuplicatePhoneNumberException ex) {
+        log.error("handleDuplicatePhoneNumberException - ");
+        return ErrorResponse.toResponseEntity(ErrorCode.INVALID_PASSWORD);
+    }
+
+
     @ExceptionHandler(value = UserNotFoundException.class)
     protected ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
         log.error("handleUserNotFoundException - ");
@@ -97,5 +111,6 @@ public class GlobalExceptionHandler {
         log.error("handleBadCredentialsException - ");
         return ErrorResponse.toResponseEntity(ErrorCode.INVALID_PASSWORD);
     }
+
 
 }
