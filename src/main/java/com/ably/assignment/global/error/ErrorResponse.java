@@ -12,12 +12,17 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 public class ErrorResponse {
+
     private final int code; // 200
+
     private final String status; // OK
+
     private final String message; // reason
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private final LocalDateTime localDateTime = LocalDateTime.now();
+
+
 
     public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode) {
         return ResponseEntity

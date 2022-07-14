@@ -47,6 +47,7 @@ public class UserService {
 
     public User getUserOrThrow() {
         CustomPrincipal principal = (CustomPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         if (principal != null && principal.getEmail() != null) {
             return userRepository.findByEmail(principal.getEmail()) // token 에는 encrypt 된 메일 형태로 존재
                     .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));

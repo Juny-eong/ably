@@ -31,8 +31,7 @@ public class PhoneNumberAuthenticationProvider implements AuthenticationProvider
 
         log.info("success to create PhoneNumberPasswordAuthenticationToken");
 
-        return PhoneNumberPasswordAuthenticationToken
-                .authenticated(userDetailsService.loadUserByPhoneNumber(phoneNumber));
+        return PhoneNumberPasswordAuthenticationToken.authenticated(userDetails);
     }
 
 

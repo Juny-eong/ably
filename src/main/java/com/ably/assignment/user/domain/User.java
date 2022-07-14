@@ -49,6 +49,7 @@ public class User extends BaseTimeEntity {
     @Transient
     private String identifier;
 
+
     public String getDecryptedEmail() {
         return Objects.requireNonNullElseGet(
                 decryptedEmail,

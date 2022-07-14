@@ -17,8 +17,7 @@ public class VerificationCodeResponse {
     public static VerificationCodeResponse of(Verification verification) {
         return VerificationCodeResponse.builder()
                 .message(
-                        "[Web발신] [에이블리] 인증번호[:Code]를 입력해 주세요."
-                                .replace(":Code", String.valueOf(verification.getCode()))
+                        String.format("[Web발신] [에이블리] 인증번호[%d]를 입력해 주세요.", verification.getCode())
                 )
                 .build();
     }

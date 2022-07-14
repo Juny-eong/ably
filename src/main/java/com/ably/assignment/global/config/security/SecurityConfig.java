@@ -28,6 +28,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.List;
 
+
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
@@ -62,7 +63,7 @@ public class SecurityConfig {
 
 
     /**
-     * SecurityFilterChain 이 아닌, 서비스 레이어에서 authenticate 하기 위한 ProviderManager 빈 등록
+     * SecurityFilterChain 이 아닌, 서비스 레이어에서 authentication 하기 위한 ProviderManager 빈 등록
      * user-defined authenticationProvider list 를 생성자를 통해 주입해야 한다.
      */
     @Bean
@@ -82,10 +83,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable() // rest server
-                .formLogin().disable() // not form login
-                .httpBasic().disable() // authentication - bearer
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // no use session
+                .csrf().disable()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
                 .exceptionHandling()

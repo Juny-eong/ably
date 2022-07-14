@@ -31,7 +31,7 @@ public class UserController {
 
 
     @PatchMapping(path = "/password")
-    public ResponseEntity<ResponseWrapper<Void>> resetPassword(@RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<ResponseWrapper<Void>> resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
         userService.resetPassword(request.toUser());
         return ResponseWrapper.ok("reset password success", null);
     }

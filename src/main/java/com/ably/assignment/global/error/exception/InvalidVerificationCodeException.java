@@ -4,8 +4,8 @@ import com.ably.assignment.global.error.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public class InvalidVerificationCodeException extends RuntimeException {
     private final ErrorCode errorCode;
 

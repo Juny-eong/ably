@@ -77,17 +77,20 @@ public class GlobalExceptionHandler {
         return ErrorResponse.toResponseEntity(ex.getErrorCode());
     }
 
+
     @ExceptionHandler(value = AuthenticationException.class)
     protected ResponseEntity<ErrorResponse> handleAuthenticationException() {
         log.error("handleAuthenticationException - ");
         return ErrorResponse.toResponseEntity(ErrorCode.AUTH_FAILED);
     }
 
+
     @ExceptionHandler(value = AccessDeniedException.class)
     protected ResponseEntity<ErrorResponse> handleAccessDeniedException() {
         log.error("handleAccessDeniedException - ");
         return ErrorResponse.toResponseEntity(ErrorCode.ACCESS_DENIED);
     }
+
 
     @ExceptionHandler(value = BadCredentialsException.class)
     protected ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
