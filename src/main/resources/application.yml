@@ -30,7 +30,7 @@ spring:
 jwt:
   secret: vnjzj23iDfd45jDViowe8f1asPqjinaZ0wif12IBdfAEIc67ncvjj1vmk49vnn2jfEJEnvEi5V2d0feTji33nVVMi2wqiegRW5gjia34wrBwrzeajrG
   token:
-    type: BEARER
+    type: Bearer
     expiration-ms: 1800000
 
 
