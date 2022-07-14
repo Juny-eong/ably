@@ -3,6 +3,9 @@ package com.ably.assignment.global.config.security.jwt;
 
 import com.ably.assignment.global.config.security.CustomPrincipal;
 import com.ably.assignment.global.config.security.authentication.PhoneNumberPasswordAuthenticationToken;
+import com.ably.assignment.global.encrypt.SEEDEncoder;
+import com.ably.assignment.global.error.ErrorCode;
+import com.ably.assignment.global.error.exception.InvalidTokenException;
 import com.ably.assignment.login.controller.dto.TokenResponse;
 import com.ably.assignment.user.domain.User;
 import io.jsonwebtoken.Claims;
@@ -70,7 +73,7 @@ public class TokenProvider {
                 .email(claims.getSubject())
                 .build();
 
-        log.info("[getAuthentication] user email - {}", customPrincipal.getEmail());
+        log.info("[getAuthentication] user email - {}", SEEDEncoder.decrypt(customPrincipal.getEmail()));
 
         // authorities 파라미터를 받지 않는 생성자는 isAuthenticated = false 로 설정 -> FORBIDDEN
         return new UsernamePasswordAuthenticationToken(customPrincipal, null, new ArrayList<>());
@@ -88,9 +91,8 @@ public class TokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            log.info("[validationToken] - invalid token");
+            throw new InvalidTokenException(ErrorCode.INVALID_TOKEN);
         }
-        return false;
     }
 
 

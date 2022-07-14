@@ -1,5 +1,11 @@
 package com.ably.assignment.global.config.security.jwt;
 
+import com.ably.assignment.global.error.ErrorCode;
+import com.ably.assignment.global.error.ErrorResponse;
+import com.ably.assignment.global.error.exception.InvalidTokenException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
@@ -26,6 +32,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
 
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -36,21 +44,31 @@ public class JwtFilter extends OncePerRequestFilter {
 
         log.info("\njwt: {}", jwt);
 
-        // validation & set context
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            Authentication authentication = tokenProvider.getAuthentication(jwt);
-            /**
-             * It is important to create a new SecurityContext instance instead of using
-             * `SecurityContextHolder.getContext().setAuthentication(authentication)`
-             * to avoid race conditions across multiple threads.
-             */
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            context.setAuthentication(authentication);
-            SecurityContextHolder.setContext(context);
+        try {
+            // validation & set context
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+                Authentication authentication = tokenProvider.getAuthentication(jwt);
+                /**
+                 * It is important to create a new SecurityContext instance instead of using
+                 * `SecurityContextHolder.getContext().setAuthentication(authentication)`
+                 * to avoid race conditions across multiple threads.
+                 */
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                context.setAuthentication(authentication);
+                SecurityContextHolder.setContext(context);
+            }
+
+            filterChain.doFilter(request, response);
+
+        }
+        catch (InvalidTokenException ex) {
+            log.error("[token exception] - {}", ex.getErrorCode().getMessageDetails());
+            response.setStatus(ex.getErrorCode().getHttpStatus().value());
+            response.getWriter().write(writeErrorCodeToString(ex.getErrorCode()));
         }
 
-        filterChain.doFilter(request, response);
     }
+
 
     @Nullable
     private String resolveToken(HttpServletRequest request) {
@@ -60,4 +78,10 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
+
+    private String writeErrorCodeToString(ErrorCode errorCode) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(ErrorResponse.toResponseEntity(errorCode));
+    }
+
 }
