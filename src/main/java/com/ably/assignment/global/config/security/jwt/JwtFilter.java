@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -64,6 +65,7 @@ public class JwtFilter extends OncePerRequestFilter {
         catch (InvalidTokenException ex) {
             log.error("[token exception] - {}", ex.getErrorCode().getMessageDetails());
             response.setStatus(ex.getErrorCode().getHttpStatus().value());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(writeErrorCodeToString(ex.getErrorCode()));
         }
 
