@@ -1,6 +1,7 @@
 package com.ably.assignment.unit.service;
 
 import com.ably.assignment.global.encrypt.SEEDEncoder;
+import com.ably.assignment.global.error.exception.DuplicateEmailException;
 import com.ably.assignment.global.error.exception.DuplicateUserException;
 import com.ably.assignment.global.error.exception.UserNotFoundException;
 import com.ably.assignment.mock.WithMockCustomPrincipal;
@@ -81,7 +82,7 @@ public class UserServiceTest {
         given(userRepository.findByEmail(any())).willReturn(Optional.of(user)); // 유저 이미 존재
 
         // when & then
-        assertThatThrownBy(() -> userService.createUser(user)).isInstanceOf(DuplicateUserException.class);
+        assertThatThrownBy(() -> userService.createUser(user)).isInstanceOf(DuplicateEmailException.class);
 
     }
 
