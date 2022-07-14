@@ -1,6 +1,6 @@
 # ably-assignment
 
-#
+# 
 
 ## 0. 개발 환경
 
@@ -14,11 +14,10 @@
 
 ## 1. DDL / ERD
 
----
 
 ### - **엔티티 관계 다이어그램**
 
-![Untitled](test%20(1)%20ab%20a083c58974d94daf926f28f72e540060/Untitled.png)
+![12345](https://user-images.githubusercontent.com/58846192/179011900-c297173a-c04e-49bb-a04c-8f7f13c93c1c.png)
 
 #
 
@@ -77,19 +76,29 @@ create index IDX_VERIFICATION_PHONE_NO on VERIFICATION (PHONE_NUMBER);
             - [https://seed.kisa.or.kr/kisa/algorithm/EgovSeedInfo.do](https://seed.kisa.or.kr/kisa/algorithm/EgovSeedInfo.do)
     - 비밀번호 저장 시 단방향 해시 알고리즘 암호화
         - DelegatingPasswordEncoder, default = bcrypt
+        
+#
+
     
-- 다중 식별자 로그인 구현
+- **다중 식별자 로그인 구현**
     - 이메일 외에 전화번호로 로그인 시도 시, 별도의 인증 로직 수행
     - spring security 인증객체(Authentication) 및 인증제공자(AuthenticationProvider) 추가 구현
         - [`PhoneNumberAuthenticationProvider`](https://github.com/Juny-eong/ably/blob/master/src/main/java/com/ably/assignment/global/config/security/authentication/PhoneNumberAuthenticationProvider.java#L17)
         - [`PhoneNumberPasswordAuthenticationToken`](https://github.com/Juny-eong/ably/blob/master/src/main/java/com/ably/assignment/global/config/security/authentication/PhoneNumberPasswordAuthenticationToken.java#L14)
         - [`SecurityConfig`](https://github.com/Juny-eong/ably/blob/master/src/main/java/com/ably/assignment/global/config/security/SecurityConfig.java#L70)
 
-- JWT 를 이용한 인증방식 구현
+
+#
+
+- **JWT 를 이용한 인증방식 구현**
     - Security filter chain 내에 jwt 필터를 구현해서 token claim parsing 후 Authentication 구성
     - 토큰 만료 기한은 발급 시간으로부터 30분으로 설정
-    
-- unit / integration test 작성
+   
+#
+   
+- **unit / integration test 작성**
+
+#
 
 ## 3. API 명세 및 테스트 예시
 
@@ -174,7 +183,7 @@ POST localhost:8080/users/login
 - 식별자 : 이메일 주소 또는 핸드폰 번호 모두 로그인 가능
 
 ```json
-POST localhsot:8080/login
+POST localhost:8080/login
 
 {
     "identifier": "adipy1470@naver.com",
@@ -209,7 +218,7 @@ POST localhsot:8080/login
 http 요청 헤더에 `Authorization: Bearer {JWT}` 형식으로 입력
 
 ```json
-GET  localhsot:8080/users
+GET  localhost:8080/users
 
 // header
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJOSSt0dGtCTFJaQlNMRExGaE5jMjJRPT0iLCJzdWIiOiJLVmFUU3pFcEtCVlQ4U0svT1RsVWduakltNTlIY0xtTGJJdCs1R2xPSDFZPSIsImlhdCI6MTY1NzgwNDYyMSwiZXhwIjoxNjU3ODA2NDIxfQ.YXS0N3sJBLSwvZjePlQOzsQJaK3OM4h7Xp971vIIIk6Yy1RCiVglvMqyBL7NDQN7cME2YAKtAFdcyO7Rh6igPw
@@ -240,9 +249,9 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJOSSt0dGtCTFJaQlNMRExGaE5jM
 - 위의 인증코드 발급 api 로 코드를 재발급 받은 뒤, 아래 요청의 verificationCode에 입력
 
 ```json
-// POST localhsot:8080/verification/code?phone-number=01012345678 -> 311628
+// POST localhost:8080/verification/code?phone-number=01012345678 -> 311628
 
-PATCH  localhsot:8080/users/password
+PATCH  localhost:8080/users/password
 
 {
     "email": "adipy1470@naver.com",
