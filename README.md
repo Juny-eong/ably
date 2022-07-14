@@ -146,7 +146,7 @@ POST localhost:8080/verification/code?phone-number=01012345678
     - 유효하지 않은 경우: 기간이 만료되거나 이미 인증에 사용된 경우
 
 ```json
-POST localhost:8080/users/login
+POST localhost:8080/users/sign-up
 
 {
     "email": "adipy14701@naver.com",
