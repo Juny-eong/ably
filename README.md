@@ -149,7 +149,7 @@ POST localhost:8080/verification/code?phone-number=01012345678
 POST localhost:8080/users/sign-up
 
 {
-    "email": "adipy14701@naver.com",
+    "email": "adipy1470@naver.com",
     "password": "qwer1234!",
     "name": "jyl",
     "phoneNumber": "01012345678",
