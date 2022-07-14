@@ -96,8 +96,8 @@ create index IDX_VERIFICATION_PHONE_NO on VERIFICATION (PHONE_NUMBER);
    
 #
    
-- **unit / integration test 작성**
-
+- **UNIT / INTEGRATION TEST 작성**
+    - ![image](https://user-images.githubusercontent.com/58846192/179015329-85e3b296-6518-4f8c-a26b-088cca200a85.png)
 #
 
 ## 3. API 명세 및 테스트 예시
