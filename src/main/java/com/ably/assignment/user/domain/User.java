@@ -9,14 +9,21 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "users")
 @Entity
+@Table(
+        name = "users",
+        indexes = {
+                @Index(name = "idx_users_email", columnList = "email"),
+                @Index(name = "idx_users_phone_no", columnList = "phoneNumber")
+        }
+)
 public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +32,10 @@ public class User extends BaseTimeEntity {
     @Column(unique = true)
     private String email;
 
+    @NotNull
     private String password;
 
+    @NotNull
     private String name;
 
     private String nickname;
